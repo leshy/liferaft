@@ -86,7 +86,7 @@ function Raft(address, options) {
   raft.latency = 0;
   raft.log = null;
   raft.nodes = [];
-
+  raft.self = options.self || null
   //
   // Raft §5.2:
   //
@@ -798,6 +798,7 @@ Raft.prototype.join = function join(address, write) {
   if (raft.address === address) return;
 
   var node = raft.clone({
+    self: raft,
     write: write,       // Optional function that receives our writes.
     address: address,   // A custom address for the raft we added.
     state: Raft.CHILD   // We are a raft in the cluster.
